@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	_ "json_parser/tokens"
+	"json_parser/tokens"
 	"json_parser/scanner"
 ); 
 
@@ -23,6 +23,12 @@ func readJsonFile() []byte{
 
 func main() {
 	var data_bytes []byte = readJsonFile()
-	tokens := scanner.NewScanner(data_bytes)
-	tokens.Tokenize()
+	lexer := scanner.NewScanner(data_bytes)
+	for {
+		tok := lexer.NextToken()
+		fmt.Println(tok)
+		if tok.Type == tokens.TOKEN_EOF {
+			break
+		}
+	}
 }
