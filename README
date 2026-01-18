@@ -1,0 +1,3 @@
+An Experimental JSON parser
+---------------------------
+I'm trying to write a JSON parser to understand the performance implications behind parsing huge JSON payloads.
