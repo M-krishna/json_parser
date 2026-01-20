@@ -28,17 +28,19 @@ const (
 func (t TokenType) String() string {
 	switch t {
 	case TOKEN_OPEN_BRACE:
-		return "{"
+		return "TOKEN_OPEN_BRACE"
 	case TOKEN_CLOSE_BRACE:
-		return "}"
+		return "TOKEN_CLOSE_BRACE"
 	case TOKEN_OPEN_BRACKET:
-		return "["
+		return "TOKEN_OPEN_BRACKET"
 	case TOKEN_CLOSE_BRACKET:
-		return "]"
+		return "TOKEN_CLOSE_BRACKET"
 	case TOKEN_COLON:
-		return ":"
+		return "TOKEN_COLON"
 	case TOKEN_COMMA:
-		return ","
+		return "TOKEN_COMMA"
+	case TOKEN_EOF:
+		return "TOKEN_EOF"
 	}
 	return ""
 }

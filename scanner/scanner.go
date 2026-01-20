@@ -25,21 +25,29 @@ func (s *Scanner) NextToken() tokens.Token {
 		return tokens.NewToken(tokens.TOKEN_EOF, s.pos, s.pos)
 	}
 
+	start := s.pos
 	ch := s.consume()
+	end := s.pos
 
 	switch ch {
 	case '{':
-		return tokens.NewToken(tokens.TOKEN_OPEN_BRACE, 0, 0)
+		return tokens.NewToken(tokens.TOKEN_OPEN_BRACE, start, end)
 	case '}':
-		return tokens.NewToken(tokens.TOKEN_CLOSE_BRACE, 0, 0)
+		return tokens.NewToken(tokens.TOKEN_CLOSE_BRACE, start, end)
 	case '[':
-		return tokens.NewToken(tokens.TOKEN_OPEN_BRACKET, 0, 0)
+		return tokens.NewToken(tokens.TOKEN_OPEN_BRACKET, start, end)
 	case ']':
-		return tokens.NewToken(tokens.TOKEN_CLOSE_BRACKET, 0, 0)
+		return tokens.NewToken(tokens.TOKEN_CLOSE_BRACKET, start, end)
 	case ':':
-		return tokens.NewToken(tokens.TOKEN_COLON, 0, 0)
+		return tokens.NewToken(tokens.TOKEN_COLON, start, end)
 	case ',':
-		return tokens.NewToken(tokens.TOKEN_COMMA, 0, 0)
+		return tokens.NewToken(tokens.TOKEN_COMMA, start, end)
+	case '"':
+		// handle string (need to go through the characters until you reach closing string)
+		for !s.isAtEnd() && s.peek() != '"' {
+			s.advance()
+		}
+		return tokens.NewToken(tokens.TOKEN_STRING, start, end)
 	}
 	panic(fmt.Sprintf("Unexpected character '%c' at position %d", ch, s.pos-1))
 }
@@ -51,8 +59,10 @@ func isWhiteSpace(ch byte) bool {
 	return (ch == SPACE) || (ch == NEW_LINE) || (ch == TAB_SPACE)
 }
 
-func (s *Scanner) advance() {
+func (s *Scanner) advance() byte {
+	curr_byte := s.data[s.pos]
 	s.pos++
+	return curr_byte
 }
 
 func (s *Scanner) consume() byte {
